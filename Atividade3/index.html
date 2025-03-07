@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <style>
+        * {
+            border: 0px;
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+        }
+
+        .Container,
+        .Content,
+        form,
+        .sideTitle,form > div,.Item,.Btn,.sideC,.numbers,.numI{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+        }
+        .Container{
+            width: 100%;
+            height: 100vh;
+        }
+        .Content{
+            width: 70%;
+            height: 50%;
+            border-radius: 15px;
+            box-shadow: 0px 5px 10px 0px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+        .sideTitle {
+            width: 20%;
+            height: 100%;
+            background-color: black;
+            color: white;
+            font-size: 50px;
+            writing-mode: vertical-lr;
+            text-orientation: upright;
+            text-transform: uppercase;
+        }
+        .sideC{
+            height: 100%;
+            width: 100%;
+            padding: 10px;
+            gap: 2px;
+            flex-direction: column;
+            overflow: hidden;
+        }
+        form {
+            height: 20%;
+            width: 100%;
+            padding: 10px;
+            gap: 10px;
+            overflow: hidden;
+        }
+        form > .Item{
+            width: 100%;
+            height: 100%;
+        }
+        .Item > input{
+            width: 100%;
+            height: 100%;
+            border-bottom: 1px solid black;
+            outline: none;
+            font-size: 25px;
+        }
+        form > .Btn{
+            width: 20%;
+            height: 100%;
+        }
+        .Btn > input{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 100%;
+            height: 100%;
+            border-radius: 15px;
+            background-color: white;
+            box-shadow: 0px 5px 5px 0px rgba(0, 0, 0, 0.5);
+            transition: 0.5s;
+            text-transform: uppercase;
+        }
+        .Btn > input:hover{
+            background-color: black;
+            color: white;
+            box-shadow: 0px 2px 10px 0px rgba(0, 0, 0, 0);
+        }
+        .numbers{
+            height: 100%;
+            width: 100%;
+            flex-wrap: wrap;
+            overflow-y: auto;
+            gap: 5px;
+        }
+        .numI{
+            height: 30%;
+            aspect-ratio: 1/1;
+            background-color: black;
+            color: white;
+            border-radius: 5px;
+
+        }
+    </style>
+</head>
+<body>
+    <div class="Container">
+        <div class="Content">
+            <div class="sideTitle">
+                <p>even</p>
+            </div>
+            <div class="sideC">
+                <form onsubmit="getEven(event)">
+                    <div class="Item">
+                        <input type="number" min="0">
+                    </div>
+                    <div class="Btn">
+                        <input type="submit" value="Send">
+                    </div>
+                </form>
+                <div class="numbers">
+
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        let numb = document.getElementsByClassName("numbers")[0]
+        async function getEven(e){
+            e.preventDefault();
+            let tot = document.getElementsByClassName("Item")[0].children[0].value
+
+            let res = await fetch("http://127.0.0.1:8080/res",{
+                method:"POST",
+                headers:{
+                    "Content-Type":"text/plain"
+                },
+                body:tot
+            })
+            let data = await res.json()
+            console.log(data.arrayE)
+
+            $(".numbers").empty()
+            data.arrayE.map((num)=>{
+                let div = $("<div class='numI'></div>").text(num)
+                $(".numbers").append(div)
+            })
+        }
+    </script>
+</body>
+</html>
